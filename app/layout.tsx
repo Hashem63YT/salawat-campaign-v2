@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   description: 'تطبيق لتتبع الصلاة على النبي محمد ﷺ بشكل جماعي ومجهول',
   applicationName: 'حملة الصلاة على النبي ﷺ',
   icons: {
-    icon: '/icon.svg',
+    icon: '/icon-192x192.png',
     apple: '/apple-touch-icon.png',
   },
   manifest: '/manifest.json',
@@ -56,6 +56,9 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <head>
+        {/* Favicon Links */}
+        <link rel="icon" type="image/png" href="/icon-192x192.png" />
+        <link rel="shortcut icon" type="image/png" href="/icon-192x192.png" />
         {/* PWA Meta Tags */}
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />

@@ -259,26 +259,26 @@ export default function Home() {
     )
   }
 
-  // Animated Counter Component
+  // Animated Counter Component (Small size - 1/4 of original)
   const AnimatedCounter = ({ value, label, icon }: { value: number; label: string; icon?: string }) => {
     return (
       <motion.div
-        className="islamic-card p-8 md:p-10 lg:p-12 text-center"
+        className="islamic-card p-2 md:p-2.5 text-center"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
       >
         {icon && (
-          <div className="text-5xl md:text-6xl mb-4">{icon}</div>
+          <div className="text-lg md:text-xl mb-1">{icon}</div>
         )}
         <div
           key={value}
-          className="font-arabic-display text-5xl md:text-6xl lg:text-7xl text-islamic-green-700 mb-4 animate-counter-increment"
+          className="font-arabic-display text-xl md:text-2xl text-islamic-green-700 mb-1 animate-counter-increment"
           aria-live="polite"
         >
-          {value.toLocaleString('ar-EG')}
+          {value.toLocaleString('en-US')}
         </div>
-        <p className="font-arabic-body text-lg md:text-xl text-gray-600 arabic-text">
+        <p className="font-arabic-body text-xs md:text-sm text-gray-600 arabic-text">
           {label}
         </p>
       </motion.div>
@@ -286,20 +286,17 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-4 md:p-8 lg:p-12">
-      <div className="max-w-6xl w-full mx-auto space-y-8 md:space-y-12">
+    <main className="min-h-screen flex flex-col items-center justify-center px-4 pb-2 md:px-8 md:pb-4 lg:px-12 lg:pb-6">
+      <div className="max-w-6xl w-full mx-auto space-y-3 md:space-y-4">
         {/* Title Section */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="font-arabic-display text-4xl md:text-5xl lg:text-6xl text-center text-islamic-green-700 mb-2 arabic-text">
+          <h1 className="font-arabic-display text-4xl md:text-5xl lg:text-6xl text-center text-islamic-green-700 mb-0 arabic-text">
             حملة الصلاة على النبي ﷺ
           </h1>
-          <p className="font-arabic-body text-lg md:text-xl text-center text-gray-600">
-            معاً نصلي على خير الأنام
-          </p>
         </motion.div>
 
         {/* Loading State */}
@@ -348,114 +345,109 @@ export default function Home() {
           )}
         </AnimatePresence>
 
-        {/* Counters Display Section */}
+        {/* Form and Statistics Section - Side by side on desktop, stacked on mobile */}
         <AnimatePresence>
           {stats && !loading && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
-                <AnimatedCounter
-                  value={stats.totalCount}
-                  label="إجمالي الصلوات"
-                  icon="📿"
-                />
-                <AnimatedCounter
-                  value={stats.contributionCount}
-                  label="عدد المساهمات"
-                  icon="👥"
-                />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Form Section */}
-        <AnimatePresence>
-          {stats && !loading && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <form
-                onSubmit={handleSubmit}
-                className="islamic-card p-6 md:p-8 lg:p-10 max-w-2xl mx-auto"
-              >
-                {/* Form Title */}
-                <h2 className="font-arabic-display text-2xl md:text-3xl text-islamic-green-700 mb-6 text-center arabic-text">
-                  ساهم في الحملة
-                </h2>
-
-                {/* Name Input Field */}
-                <div className="mb-6">
-                  <label
-                    htmlFor="contributor-name"
-                    className="block font-arabic-body text-lg text-gray-700 mb-2 arabic-text"
-                  >
-                    الاسم
-                  </label>
-                  <input
-                    type="text"
-                    id="contributor-name"
-                    value={formName}
-                    onChange={(e) => setFormName(e.target.value)}
-                    placeholder="أدخل اسمك"
-                    dir="rtl"
-                    disabled={isSubmitting}
-                    className="w-full px-4 py-3 text-lg border-2 border-islamic-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-islamic-green-500 focus:border-transparent transition-all font-arabic-body arabic-text disabled:bg-gray-100 disabled:cursor-not-allowed"
-                  />
-                </div>
-
-                {/* Amount Input Field */}
-                <div className="mb-6">
-                  <label
-                    htmlFor="salawat-amount"
-                    className="block font-arabic-body text-lg text-gray-700 mb-2 arabic-text"
-                  >
-                    عدد الصلوات
-                  </label>
-                  <input
-                    type="number"
-                    id="salawat-amount"
-                    value={formAmount}
-                    onChange={(e) => setFormAmount(e.target.value)}
-                    min="1"
-                    step="1"
-                    placeholder="أدخل عدد الصلوات"
-                    dir="rtl"
-                    disabled={isSubmitting}
-                    className="w-full px-4 py-3 text-lg border-2 border-islamic-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-islamic-green-500 focus:border-transparent transition-all font-arabic-body arabic-text disabled:bg-gray-100 disabled:cursor-not-allowed"
-                  />
-                  {formError && (
-                    <motion.p
-                      initial={{ opacity: 0, y: -5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="mt-2 text-red-600 font-arabic-body text-sm arabic-text"
-                    >
-                      {formError}
-                    </motion.p>
-                  )}
-                </div>
-
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  disabled={isSubmitting || !formName.trim() || !formAmount.trim()}
-                  className="w-full md:w-auto md:px-12 py-4 bg-islamic-green-600 text-white rounded-xl font-arabic-body text-lg hover:bg-islamic-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400 shadow-lg hover:shadow-xl"
+              {/* Form Section - Takes 3/4 on desktop, full width on mobile */}
+              <div className="md:col-span-3">
+                <form
+                  onSubmit={handleSubmit}
+                  className="islamic-card p-6 md:p-8 lg:p-10"
                 >
-                  {isSubmitting ? 'جاري الإضافة...' : 'إضافة الصلوات'}
-                </button>
+                  {/* Form Title */}
+                  <h2 className="font-arabic-display text-2xl md:text-3xl text-islamic-green-700 mb-6 text-center arabic-text">
+                    ساهم في الحملة
+                  </h2>
 
-                {/* Helper Text */}
-                <p className="mt-6 text-center font-arabic-body text-sm text-gray-600 arabic-text">
-                  كل صلاة على النبي ﷺ لها أجر عظيم
-                </p>
-              </form>
+                  {/* Name Input Field */}
+                  <div className="mb-6">
+                    <label
+                      htmlFor="contributor-name"
+                      className="block font-arabic-body text-lg text-gray-700 mb-2 arabic-text"
+                    >
+                      الاسم
+                    </label>
+                    <input
+                      type="text"
+                      id="contributor-name"
+                      value={formName}
+                      onChange={(e) => setFormName(e.target.value)}
+                      placeholder="أدخل اسمك"
+                      dir="rtl"
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 text-lg border-2 border-islamic-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-islamic-green-500 focus:border-transparent transition-all font-arabic-body arabic-text disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    />
+                  </div>
+
+                  {/* Amount Input Field */}
+                  <div className="mb-6">
+                    <label
+                      htmlFor="salawat-amount"
+                      className="block font-arabic-body text-lg text-gray-700 mb-2 arabic-text"
+                    >
+                      عدد الصلوات
+                    </label>
+                    <input
+                      type="number"
+                      id="salawat-amount"
+                      value={formAmount}
+                      onChange={(e) => setFormAmount(e.target.value)}
+                      min="1"
+                      step="1"
+                      placeholder="أدخل عدد الصلوات"
+                      dir="rtl"
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 text-lg border-2 border-islamic-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-islamic-green-500 focus:border-transparent transition-all font-arabic-body arabic-text disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    />
+                    {formError && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-2 text-red-600 font-arabic-body text-sm arabic-text"
+                      >
+                        {formError}
+                      </motion.p>
+                    )}
+                  </div>
+
+                  {/* Submit Button */}
+                  <button
+                    type="submit"
+                    disabled={isSubmitting || !formName.trim() || !formAmount.trim()}
+                    className="w-full md:w-auto md:px-12 py-4 bg-islamic-green-600 text-white rounded-xl font-arabic-body text-lg hover:bg-islamic-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400 shadow-lg hover:shadow-xl"
+                  >
+                    {isSubmitting ? 'جاري الإضافة...' : 'إضافة الصلوات'}
+                  </button>
+
+                  {/* Helper Text */}
+                  <p className="mt-2 text-center font-arabic-body text-sm text-gray-600 arabic-text">
+                    كل الأعمال تقبل وترد إلا الصلاة على أحمد ﷺ
+                  </p>
+                </form>
+              </div>
+
+              {/* Statistics Section - Takes 1/4 on desktop, full width on mobile (appears below form) */}
+              <div className="md:col-span-1">
+                <div className="grid grid-cols-2 md:grid-cols-1 gap-2 md:gap-3">
+                  <AnimatedCounter
+                    value={stats.totalCount}
+                    label="إجمالي الصلوات"
+                    icon="📿"
+                  />
+                  <AnimatedCounter
+                    value={stats.contributionCount}
+                    label="عدد المساهمات"
+                    icon="👥"
+                  />
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
