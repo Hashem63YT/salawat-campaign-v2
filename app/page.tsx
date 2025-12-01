@@ -37,9 +37,13 @@ export default function Home() {
   useEffect(() => {
     fetchInitialStats()
 
-    // Set up real-time Supabase subscription
+    // Set up real-time Supabase subscription with error handling
     const channel: RealtimeChannel = supabase
-      .channel('salawat-updates')
+      .channel('salawat-updates', {
+        config: {
+          broadcast: { self: false },
+        },
+      })
       .on(
         'postgres_changes',
         {
@@ -56,7 +60,31 @@ export default function Home() {
           setError(null)
         }
       )
-      .subscribe()
+      .subscribe((status) => {
+        // Handle subscription status changes
+        if (status === 'SUBSCRIBED') {
+          // Successfully subscribed - real-time updates are active
+          if (process.env.NODE_ENV === 'development') {
+            console.log('✅ Real-time subscription active')
+          }
+        } else if (status === 'CHANNEL_ERROR') {
+          // Channel error - real-time updates may not work, but app still functions
+          // The app will continue to work with manual refreshes and form submissions
+          if (process.env.NODE_ENV === 'development') {
+            console.warn('⚠️ Real-time subscription error - app will continue to function normally')
+          }
+        } else if (status === 'TIMED_OUT') {
+          // Connection timeout - real-time updates unavailable
+          if (process.env.NODE_ENV === 'development') {
+            console.warn('⏱️ Real-time subscription timeout - app will continue to function normally')
+          }
+        } else if (status === 'CLOSED') {
+          // Channel closed - real-time updates unavailable
+          if (process.env.NODE_ENV === 'development') {
+            console.warn('🔌 Real-time subscription closed - app will continue to function normally')
+          }
+        }
+      })
 
     // Cleanup function to unsubscribe on unmount
     return () => {
