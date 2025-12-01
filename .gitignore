@@ -49,3 +49,6 @@ next-env.d.ts
 
 .vercel
 .env*.local
+
+# Admin Documentation (Internal Only)
+\#admin/

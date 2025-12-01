@@ -1,0 +1,17 @@
+# Admin Documentation (Do not deploy)
+\#admin/
+
+# Development files
+# Exclude documentation markdown files but allow root README.md
+docs/**/*.md
+\#admin/**/*.md
+
+# Testing files
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Documentation
+docs/
+
