@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript"
+  ],
+  "rules": {
+    // Project-specific linting rules can be added here
+    // Ensure RTL-friendly code practices
+  }
+}
+

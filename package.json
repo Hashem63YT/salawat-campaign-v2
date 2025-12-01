@@ -1,0 +1,33 @@
+{
+  "name": "salawat-campaign",
+  "version": "0.1.0",
+  "description": "تطبيق لتتبع الصلاة على النبي محمد ﷺ",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --ext ts,tsx",
+    "test:supabase": "tsx --env-file=.env.local test-supabase.ts"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.38.0",
+    "framer-motion": "^12.23.25",
+    "next": "^16.0.6",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@ducanh2912/next-pwa": "^10.2.0",
+    "@types/node": "^20.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "autoprefixer": "^10.4.0",
+    "dotenv": "^17.2.3",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^16.0.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.3.0"
+  }
+}

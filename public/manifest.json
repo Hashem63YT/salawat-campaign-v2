@@ -1,0 +1,47 @@
+{
+  "name": "حملة الصلاة على النبي ﷺ",
+  "short_name": "الصلاة على النبي ﷺ",
+  "description": "موقع لجمع أعداد الصلاة على سيدنا محمد ﷺ",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#16a34a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["lifestyle", "social", "utilities"],
+  "scope": "/",
+  "prefer_related_applications": false,
+  "lang": "ar",
+  "dir": "rtl"
+}
+
