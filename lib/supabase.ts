@@ -4,11 +4,16 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 // Create Supabase client with proper error handling
-// During build time, if env vars are missing, we'll use a valid placeholder
-// At runtime, actual values from Vercel will be used
 const createSupabaseClient = () => {
-  // Use actual values if available (runtime on Vercel)
-  if (supabaseUrl && supabaseAnonKey && supabaseUrl.startsWith('http')) {
+  // Check if we have valid environment variables
+  const hasValidUrl = supabaseUrl && typeof supabaseUrl === 'string' && supabaseUrl.startsWith('http')
+  const hasValidKey = supabaseAnonKey && typeof supabaseAnonKey === 'string' && supabaseAnonKey.length > 50
+  
+  if (hasValidUrl && hasValidKey) {
+    // Use actual Supabase credentials
+    if (process.env.NODE_ENV === 'development') {
+      console.log('✅ Using Supabase URL:', supabaseUrl.substring(0, 30) + '...')
+    }
     return createClient(supabaseUrl, supabaseAnonKey, {
       realtime: {
         params: {
@@ -18,9 +23,16 @@ const createSupabaseClient = () => {
     })
   }
   
-  // During build or if env vars are missing, use a valid Supabase URL format
-  // This prevents build errors while still allowing the code to compile
-  // The actual values will be injected at runtime by Vercel
+  // Fallback for build time only - should never be used at runtime on Vercel
+  if (typeof window !== 'undefined') {
+    // We're in the browser but env vars are missing - this is a configuration error
+    console.error('❌ Missing Supabase environment variables at runtime!')
+    console.error('NEXT_PUBLIC_SUPABASE_URL:', supabaseUrl ? 'Set' : 'Missing')
+    console.error('NEXT_PUBLIC_SUPABASE_ANON_KEY:', supabaseAnonKey ? 'Set' : 'Missing')
+  }
+  
+  // Use a valid Supabase URL format for build-time only
+  // This should never be used in production runtime
   const fallbackUrl = 'https://placeholder-project.supabase.co'
   const fallbackKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0'
   
