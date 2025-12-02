@@ -57,6 +57,7 @@ export default function RootLayout({
     <html lang="ar" dir="rtl">
       <head>
         {/* Favicon Links */}
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" href="/icon-192x192.png" />
         <link rel="shortcut icon" type="image/png" href="/icon-192x192.png" />
         {/* PWA Meta Tags */}
