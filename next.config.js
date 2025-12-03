@@ -114,18 +114,6 @@ const withPWA = require('@ducanh2912/next-pwa').default({
       },
     },
     {
-      urlPattern: /.*supabase\.co.*/i,
-      handler: 'NetworkFirst',
-      options: {
-        cacheName: 'supabase-cache',
-        expiration: {
-          maxEntries: 32,
-          maxAgeSeconds: 5 * 60, // 5 minutes
-        },
-        networkTimeoutSeconds: 10,
-      },
-    },
-    {
       urlPattern: ({ request }) => request.mode === 'navigate',
       handler: 'NetworkFirst',
       options: {
@@ -186,10 +174,6 @@ const nextConfig = {
     ]
   }
 }
-
-// Environment Variables Required:
-// NEXT_PUBLIC_SUPABASE_URL - Your Supabase project URL
-// NEXT_PUBLIC_SUPABASE_ANON_KEY - Your Supabase anonymous key
 
 module.exports = withPWA(nextConfig)
 

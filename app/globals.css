@@ -8,10 +8,19 @@
   }
   
   body {
-    @apply bg-gradient-to-br from-islamic-green-50 via-white to-islamic-green-50;
     @apply text-gray-900;
     @apply antialiased;
     @apply leading-relaxed;
+    
+    /* Layered background: image + gradient overlay for شفاف (transparent) effect */
+    background-image: 
+      linear-gradient(to bottom right, rgba(240, 253, 244, 0.85), rgba(255, 255, 255, 0.9), rgba(240, 253, 244, 0.85)),
+      url('/islamic-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    
     font-feature-settings: 'kern' 1;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
