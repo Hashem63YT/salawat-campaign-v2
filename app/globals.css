@@ -15,7 +15,7 @@
     /* Layered background: image + gradient overlay for شفاف (transparent) effect */
     background-image: 
       linear-gradient(to bottom right, rgba(240, 253, 244, 0.85), rgba(255, 255, 255, 0.9), rgba(240, 253, 244, 0.85)),
-      url('/islamic-bg.jpg');
+      url('/islamic-bg.webp');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;

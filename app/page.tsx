@@ -533,8 +533,8 @@ export default function Home() {
                   className="islamic-card p-3 sm:p-4 md:p-6"
                 >
                   {/* Form Title */}
-                  <h2 className="font-arabic-display text-xl sm:text-2xl md:text-3xl text-islamic-green-700 mb-3 sm:mb-4 md:mb-6 text-center arabic-text">
-                  إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا
+                  <h2 className="font-arabic-display text-lg sm:text-xl md:text-2xl text-islamic-green-700 mb-3 sm:mb-4 md:mb-6 text-center arabic-text">
+                  ﴿إِنَّ اللَّهَ وَمَلٰئِكَتَهُ يُصَلّونَ عَلَى النَّبِىِّ يٰأَيُّهَا الَّذينَ ءامَنوا صَلّوا عَلَيهِ وَسَلِّموا تَسليمًا﴾
                   </h2>
 
                   {/* Name Input Field */}
