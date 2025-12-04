@@ -46,3 +46,4 @@ public/workbox-*.js.map
 coverage/
 .nyc_output/
 
+.vercel

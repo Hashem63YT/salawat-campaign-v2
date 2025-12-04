@@ -16,7 +16,7 @@ export async function GET() {
   try {
     const stats = await getStats()
     return NextResponse.json(stats)
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Failed to fetch stats' },
       { status: 500 }
@@ -54,9 +54,6 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
-    
-    // Log error for debugging (visible in Vercel logs)
-    console.error('Salawat submission error:', error)
     
     return NextResponse.json(
       { error: 'Failed to process submission. Please try again.' },

@@ -28,7 +28,7 @@ async function getErrorMessage(response: Response, defaultMessage: string): Prom
       const text = await response.text()
       return text || defaultMessage
     }
-  } catch (parseError) {
+  } catch {
     // If parsing fails, use status text or default message
     return response.statusText || defaultMessage
   }
@@ -82,7 +82,7 @@ export default function Home() {
       const data = await response.json()
       setStats(data)
       setFetchError(null)
-    } catch (error) {
+    } catch {
       setFetchError('حدث خطأ أثناء تحميل البيانات. يرجى المحاولة مرة أخرى.')
     } finally {
       if (!isBackground) {
@@ -135,7 +135,6 @@ export default function Home() {
           }
         } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
           setRealtimeStatus('error')
-          console.error('Real-time subscription failed:', status)
           // Start fallback polling if it is not already running
           if (!pollingIntervalRef.current) {
             pollingIntervalRef.current = setInterval(() => {
@@ -310,7 +309,7 @@ export default function Home() {
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
           onClick={onDismiss}
-          role="alert"
+          role="dialog"
           aria-live="polite"
           aria-modal="true"
         >
@@ -457,7 +456,7 @@ export default function Home() {
               <div className="text-3xl mb-2">⚠️</div>
               <p className="font-arabic-body text-red-700 mb-4">{fetchError}</p>
               <button
-                onClick={loadStats}
+                onClick={() => loadStats()}
                 className="font-arabic-body px-6 py-2 bg-islamic-green-600 text-white rounded-lg hover:bg-islamic-green-700 transition-colors"
               >
                 إعادة المحاولة

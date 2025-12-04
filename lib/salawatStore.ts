@@ -7,6 +7,8 @@
  */
 
 import { supabase } from './supabase'
+import type { PostgrestError } from '@supabase/supabase-js'
+import type { Database } from './supabase'
 
 interface CampaignStats {
   totalCount: number
@@ -24,34 +26,46 @@ async function ensureCampaignExists(): Promise<string> {
   const { data: existing, error: fetchError } = await supabase
     .from('salawat_campaign')
     .select('id')
-    .single()
+    .single() as { data: Database['public']['Tables']['salawat_campaign']['Row'] | null; error: PostgrestError | null }
+  
+  const typedFetchError: PostgrestError | null = fetchError
 
   // If row exists, return its ID
-  if (existing && !fetchError) {
+  if (!typedFetchError && existing) {
     return existing.id
   }
 
   // If no row exists (PGRST116 error code for "no rows"), create one
-  if (fetchError && fetchError.code === 'PGRST116') {
-    const { data: newRow, error: insertError } = await supabase
+  if (typedFetchError && typedFetchError.code === 'PGRST116') {
+    const insertPayload: Database['public']['Tables']['salawat_campaign']['Insert'] = {
+      total_count: 0,
+      contribution_count: 0,
+      updated_at: new Date().toISOString(),
+    }
+    const { data: newRow, error: insertError } = await (supabase
       .from('salawat_campaign')
-      .insert({
-        total_count: 0,
-        contribution_count: 0,
-        updated_at: new Date().toISOString(),
-      })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase type inference limitation
+      .insert(insertPayload as any)
       .select('id')
-      .single()
+      .single() as unknown as Promise<{ data: Database['public']['Tables']['salawat_campaign']['Row'] | null; error: PostgrestError | null }>)
+    
+    const typedInsertError: PostgrestError | null = insertError
 
-    if (insertError) {
-      throw new Error(`Failed to create initial campaign row: ${insertError.message}`)
+    if (typedInsertError) {
+      throw new Error(`Failed to create initial campaign row: ${typedInsertError.message}`)
     }
 
+    if (!newRow) {
+      throw new Error('Insert succeeded but returned no data')
+    }
     return newRow.id
   }
 
   // Other errors should be thrown
-  throw new Error(`Failed to ensure campaign exists: ${fetchError.message}`)
+  if (!typedFetchError) {
+    throw new Error('Failed to ensure campaign exists: unknown error')
+  }
+  throw new Error(`Failed to ensure campaign exists: ${typedFetchError.message}`)
 }
 
 /**
@@ -65,7 +79,7 @@ export async function getStats(): Promise<CampaignStats> {
   const { data, error } = await supabase
     .from('salawat_campaign')
     .select('total_count, contribution_count')
-    .single()
+    .single() as { data: Pick<Database['public']['Tables']['salawat_campaign']['Row'], 'total_count' | 'contribution_count'> | null; error: PostgrestError | null }
 
   // If no rows exist, return default zeros
   if (error && error.code === 'PGRST116') {
@@ -77,6 +91,10 @@ export async function getStats(): Promise<CampaignStats> {
 
   if (error) {
     throw new Error(`Failed to fetch stats: ${error.message}`)
+  }
+
+  if (!data) {
+    throw new Error('Failed to fetch stats: no data returned')
   }
 
   return {
@@ -104,11 +122,16 @@ export async function incrementStats(amount: number, name?: string): Promise<Cam
   await ensureCampaignExists()
 
   // Step 2: Insert new contribution
-  const { data: contributionData, error: contributionError } = await supabase
+  const contributionPayload: Database['public']['Tables']['contributions']['Insert'] = {
+    name: name || null,
+    amount,
+  }
+  const { data: _contributionData, error: contributionError } = await (supabase
     .from('contributions')
-    .insert({ name: name || null, amount })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase type inference limitation
+    .insert(contributionPayload as any)
     .select()
-    .single()
+    .single() as unknown as Promise<{ data: Database['public']['Tables']['contributions']['Row'] | null; error: PostgrestError | null }>)
 
   if (contributionError) {
     throw new Error(`Failed to record contribution: ${contributionError.message}`)
@@ -116,9 +139,13 @@ export async function incrementStats(amount: number, name?: string): Promise<Cam
 
   // Step 3: Update campaign totals atomically via RPC (contribution already inserted above,
   // RPC only updates counters to prevent race conditions)
-  const { data: rpcData, error: rpcError } = await supabase.rpc('increment_salawat_stats', {
+  const rpcArgs: Database['public']['Functions']['increment_salawat_stats']['Args'] = {
     increment_amount: amount,
-  })
+  }
+  const { data: rpcData, error: rpcError } = await (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase type inference limitation
+    supabase.rpc('increment_salawat_stats', rpcArgs as any) as unknown as Promise<{ data: Database['public']['Functions']['increment_salawat_stats']['Returns'] | null; error: PostgrestError | null }>
+  )
 
   if (rpcError) {
     throw new Error(`Failed to update campaign totals via RPC: ${rpcError.message}`)

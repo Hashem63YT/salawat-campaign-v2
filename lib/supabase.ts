@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 
 // Schema defined in supabase/migrations/reset_and_recreate_schema.sql
 // Database schema types
-interface Database {
+export interface Database {
   public: {
     Tables: {
       salawat_campaign: {
