@@ -165,6 +165,18 @@ export default function Home() {
     }
   }, [])
 
+  /**
+   * Converts Arabic-Indic digits (٠-٩, Unicode U+0660–U+0669) to Western Arabic numerals (0-9).
+   * This enables proper parsing of Arabic digit input from RTL keyboards.
+   * 
+   * @param str - Input string that may contain Arabic-Indic digits
+   * @returns String with Arabic-Indic digits converted to Western digits
+   * @example convertArabicDigits("١٠٠") returns "100"
+   */
+  const convertArabicDigits = (str: string): string => {
+    return str.replace(/[\u0660-\u0669]/g, (d) => String.fromCharCode(d.charCodeAt(0) - 0x0660 + 0x0030))
+  }
+
   // Form Validation Function
   const validateAmount = (
     amount: string
@@ -175,7 +187,7 @@ export default function Home() {
       return { valid: false, error: 'يرجى إدخال عدد الصلوات' }
     }
     
-    const parsed = parseInt(trimmedAmount, 10)
+    const parsed = parseInt(convertArabicDigits(trimmedAmount), 10)
     
     if (isNaN(parsed) || parsed <= 0 || !Number.isInteger(parsed)) {
       return { valid: false, error: 'يرجى إدخال عدد صحيح موجب' }
@@ -605,7 +617,7 @@ export default function Home() {
 
                   {/* Helper Text */}
                   <p className="mt-1 sm:mt-2 text-center font-arabic-body text-xs sm:text-sm text-gray-600 arabic-text">
-                    كل الأعمال تقبل وترد إلا الصلاة على أحمد ﷺ
+                    كل الأعمال تقبل وترد      إلا الصلاة على أحمد ﷺ
                   </p>
                 </form>
               </div>
