@@ -534,7 +534,7 @@ export default function Home() {
                 >
                   {/* Form Title */}
                   <h2 className="font-arabic-display text-xl sm:text-2xl md:text-3xl text-islamic-green-700 mb-3 sm:mb-4 md:mb-6 text-center arabic-text">
-                    ساهم في الحملة
+                  إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا
                   </h2>
 
                   {/* Name Input Field */}
