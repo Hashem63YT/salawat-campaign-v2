@@ -527,7 +527,7 @@ export default function Home() {
                 transition={{ duration: 0.6 }}
               >
                 <h1 className="font-bold font-arabic-display text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-center text-islamic-green-700 mb-1 sm:mb-2 arabic-text">
-                  الموقع تحت التجربة - نرجوا عدم إضافة أعداد جديدة
+                حملة الصلاة على النبي ﷺ
                 </h1>
               </motion.div>
 
